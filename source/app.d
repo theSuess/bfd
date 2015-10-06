@@ -1,6 +1,5 @@
 import std.stdio;
 import std.string;
-import std.file;
 
 void main(string[] args)
 {
@@ -12,6 +11,13 @@ void main(string[] args)
 		writeln("\tThats all there is to it");
 		return;
 	}
+	auto file = File(args[1],"r");
+	string rawfile;
+	while (!file.eof())
+	{
+		rawfile ~= chomp(file.readln());
+	}
+	programm = rawfile.dup;
 	uint[30_000] cells;
 	long cptr = 0;
 	long sptr = 0;
