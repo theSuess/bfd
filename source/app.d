@@ -6,6 +6,10 @@ void main(string[] args)
 	char[] programm;
 	if (args.length == 1)
 	{
+		version (Unittest)
+		{
+			writeln("Default output due to Unittest");
+		}
 		writeln("Usage:");
 		writeln("\tbfd file.bfd");
 		writeln("\tThats all there is to it");
@@ -19,6 +23,11 @@ void main(string[] args)
 	}
 	programm = rawfile.dup;
 	uint[30_000] cells;
+	parseBF(programm,cells);
+}
+
+void parseBF(char[] programm,ref uint[30000] cells)
+{
 	long cptr = 0;
 	long sptr = 0;
 	bool skipping = false;
@@ -73,4 +82,11 @@ void main(string[] args)
 		}
 		sptr++;
 	}
+	writeln();
+}
+
+unittest
+{
+	uint[30_000] cells;
+	parseBF("++++++ [ > ++++++++++ < - ] > +++++ .".dup,cells);
 }
