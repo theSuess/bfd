@@ -74,6 +74,12 @@ void parseBF(char[] programm,ref uint[30000] cells)
 				debug{writef("Printing ASCII Value of %s \n",cells[cptr]);}
 				write(cast(char) cells[cptr]);
 			break;
+			case ',':
+				debug{writef("Reading from STDIN");}
+				char c;
+				readf(" %s",&c);
+				cells[cptr] = cast(int) c;
+			break;
 			case ' ','	':
 			break;
 			default:
