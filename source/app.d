@@ -1,12 +1,16 @@
 import std.stdio;
 import std.string;
+import std.file;
 
 void main(string[] args)
 {
 	char[] programm;
 	if (args.length == 1)
 	{
-		programm = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.".dup;
+		writeln("Usage:");
+		writeln("\tbfd file.bfd");
+		writeln("\tThats all there is to it");
+		return;
 	}
 	uint[30_000] cells;
 	long cptr = 0;
