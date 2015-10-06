@@ -1,6 +1,6 @@
 {
 	"name": "bfd",
-	"description": "dlang Brainfuck compiler",
+	"description": "dlang Brainfuck interpreter",
 	"copyright": "Copyright © 2015, thesuess",
 	"authors": ["thesuess"],
 	"dependencies": {
