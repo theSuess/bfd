@@ -1,6 +1,5 @@
 import std.stdio;
-import std.string;
-
+import std.string; 
 void main(string[] args)
 {
 	char[] programm;
@@ -28,10 +27,11 @@ void main(string[] args)
 
 void parseBF(char[] programm,ref uint[30000] cells)
 {
+	programm = chomp(programm).dup;
 	long cptr = 0;
 	long sptr = 0;
 	bool skipping = false;
-	long basebracket = 0;
+	long[] basebrackets;
 	while (sptr < programm.length)
 	{
 		debug{writef("Parsing: %s ",programm[sptr]);}
@@ -56,19 +56,56 @@ void parseBF(char[] programm,ref uint[30000] cells)
 			case '[':
 				if (cells[cptr] == 0)
 				{
-					debug{writeln("Expression is false");}
-					sptr = programm[sptr..$].indexOf(']') + sptr + 1;
+					auto tptr = sptr+1;
+					auto nestlvl = 1;
+					while (nestlvl != 0)
+					{
+						if (programm[tptr] == '[')
+						{
+							nestlvl++;
+							debug{writefln("Current Nestlevel %s",nestlvl);}
+						}
+						else if (programm[tptr] == ']')
+						{
+							nestlvl--;
+							debug{writefln("Current Nestlevel %s",nestlvl);}
+						}
+						tptr++;
+					}
+					debug
+					{
+						debug{writefln("Expression is false, jumping to %s",tptr);}
+						debug{writeln(programm);}
+						for (int i = 0; i < tptr; i++)
+						{
+							debug{write(" ");}
+						}
+						debug{writeln("^");}
+					}
+					sptr = tptr;
 					continue;
 				}
 				else
 				{
-					basebracket = sptr;
+					basebrackets ~= sptr;
+					debug{writeln(basebrackets);}
 				}
 				debug{writeln("Expression is True");}
 			break;
 			case ']':
-				debug{writef("Jumping back to %s\n",basebracket);}
-				sptr = basebracket;
+				debug{writeln("brackets ",basebrackets);}
+				debug{writef("Jumping back to %s\n",basebrackets[$-1]);}
+				sptr = basebrackets[$-1];
+				if (basebrackets.length == 1)
+				{
+					debug{writeln("clearing basebrackets");}
+					long[] empty;
+					basebrackets = empty;
+				}
+				else
+				{
+					basebrackets = basebrackets[0..$-1];
+				}
 				continue;
 			case '.':
 				debug{writef("Printing ASCII Value of %s \n",cells[cptr]);}
@@ -87,6 +124,7 @@ void parseBF(char[] programm,ref uint[30000] cells)
 			break;
 		}
 		sptr++;
+		debug{readln();}
 	}
 	writeln();
 }
@@ -94,5 +132,5 @@ void parseBF(char[] programm,ref uint[30000] cells)
 unittest
 {
 	uint[30_000] cells;
-	parseBF("++++++ [ > ++++++++++ < - ] > +++++ .".dup,cells);
+	parseBF("++++++[>++++++++++<-]>+++++.".dup,cells);
 }
