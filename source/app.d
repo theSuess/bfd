@@ -124,7 +124,6 @@ void parseBF(char[] programm,ref uint[30000] cells)
 			break;
 		}
 		sptr++;
-		debug{readln();}
 	}
 	writeln();
 }
